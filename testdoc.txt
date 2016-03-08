@@ -1,0 +1,240 @@
+<DOC><DOCID> 1 </DOCID>
+Text mining
+Ian H. Witten
+Computer Science, University of Waikato, Hamilton, New Zealand
+email ihw@cs.waikato.ac.nz
+Index terms
+"Bag of words" model, acronym extraction, authorship ascription, coordinate matching, data
+mining, document clustering, document frequency, document retrieval, document similarity
+metrics, entity extraction, hidden Markov models, hubs and authorities, information extraction,
+information retrieval, key-phrase assignment, key-phrase extraction, knowledge engineering,
+language identification, link analysis, machine learning, metadata, natural language processing, ngrams,
+rule learning, syntactic analysis, term frequency, text categorization, text mining, text
+summarization, token identification, training, wrapper induction.
+1 Introduction
+Text mining is a burgeoning new field that attempts to glean meaningful information from natural
+language text. It may be loosely characterized as the process of analyzing text to extract
+information that is useful for particular purposes. Compared with the kind of data stored in
+databases, text is unstructured, amorphous, and difficult to deal with algorithmically. Nevertheless,
+in modern culture, text is the most common vehicle for the formal exchange of information. The
+field of text mining usually deals with texts whose function is the communication of factual
+information or opinions, and the motivation for trying to extract information from such text
+automatically is compelling "even if success is only partial.
+Four years ago, Hearst [Hearst, 1999] wrote that the nascent field of "text data mining" had "a
+name and a fair amount of hype, but as yet almost no practitioners." It seems that even the name is
+unclear: the phrase "text mining" appears 17 times as often as "text data mining" on the Web,
+according to a popular search engine (and "data mining" occurs 500 times as often). Moreover, the
+meaning of either phrase is by no means clear: Hearst defines data mining, information access, and
+corpus-based computational linguistics and discusses the relationship of these to text data
+mining "but does not define that term. The literature on data mining is far more extensive, and
+also more focused: there are numerous textbooks and critical reviews that trace its development
+from roots in machine learning and statistics. Text mining emerged at an unfortunate time in
+history. Data mining was able to ride the back of the high technology extravaganza throughout the
+1990s, and became firmly established as a widely-used practical technology "though the dot com
+crash may have hit it harder than other areas [Franklin, 2002]. Text mining, in contrast, emerged
+just before the market crash "the first workshops were held at the International Machine Learning
+Conference in July 1999 and the International Joint Conference on Artificial Intelligence in
+August 1999 "and missed the opportunity to gain a solid foothold during the boom years.
+The phrase "text mining" is generally used to denote any system that analyzes large quantities of
+natural language text and detects lexical or linguistic usage patterns in an attempt to extract
+probably useful (although only probably correct) information [Sebastiani, 2002]. In discussing a
+topic that lacks a generally accepted definition in a practical Handbook such as this, I have chosen
+to cast the net widely and take a liberal viewpoint of what should be included, rather than
+attempting a clear-cut characterization that will inevitably restrict the scope of what is covered.
+The remainder of this section discusses the relationship between text mining and data mining, and
+between text mining and natural language processing, to air important issues concerning the
+meaning of the term. The article "s major section follows: an introduction to the great variety of
+tasks that involve mining plain text. We then examine the additional leverage that can be obtained
+when mining semi-structured text such as pages of the World-Wide Web, which opens up a range
+2
+of new techniques that do not apply to plain text. Following that we indicate, by example, what
+automatic text mining techniques may aspire to in the future by briefly describing how human
+"text miners" who are information researchers rather than subject-matter experts may be able to
+discover new scientific hypotheses solely by analyzing the literature. Finally we review some basic
+techniques that underpin text mining systems, and look at software tools that are available to help
+with the work.
+Text mining and data mining
+Just as data mining can be loosely described as looking for patterns in data, text mining is about
+looking for patterns in text. However, the superficial similarity between the two conceals real
+differences. Data mining can be more fully characterized as the extraction of implicit, previously
+unknown, and potentially useful information from data [Witten and Frank, 2000]. The information
+is implicit in the input data: it is hidden, unknown, and could hardly be extracted without recourse
+to automatic techniques of data mining. With text mining, however, the information to be extracted
+is clearly and explicitly stated in the text. It "s not hidden at all "most authors go to great pains to
+make sure that they express themselves clearly and unambiguously "and, from a human point of
+view, the only sense in which it is "previously unknown" is that human resource restrictions make
+it infeasible for people to read the text themselves. The problem, of course, is that the information
+is not couched in a manner that is amenable to automatic processing. Text mining strives to bring
+it out of the text in a form that is suitable for consumption by computers directly, with no need for
+a human intermediary.
+Though there is a clear difference philosophically, from the computer "s point of view the problems
+are quite similar. Text is just as opaque as raw data when it comes to extracting information"
+probably more so.
+Another requirement that is common to both data and text mining is that the information extracted
+should be "potentially useful." In one sense, this means actionable "capable of providing a basis
+for actions to be taken automatically. In the case of data mining, this notion can be expressed in a
+relatively domain-independent way: actionable patterns are ones that allow non-trivial predictions
+to be made on new data from the same source. Performance can be measured by counting
+successes and failures, statistical techniques can be applied to compare different data mining
+methods on the same problem, and so on. However, in many text mining situations it is far harder
+to characterize what "actionable" means in a way that is independent of the particular domain at
+hand. This makes it difficult to find fair and objective measures of success.
+In many data mining applications, "potentially useful" is given a different interpretation: the key
+for success is that the information extracted must be comprehensible in that it helps to explain the
+data. This is necessary whenever the result is intended for human consumption rather than (or as
+well as) a basis for automatic action. This criterion is less applicable to text mining because, unlike
+data mining, the input itself is comprehensible. Text mining with comprehensible output is
+tantamount to summarizing salient features from a large body of text, which is a subfield in its
+own right: text summarization.
+Text mining and natural language processing
+Text mining appears to embrace the whole of automatic natural language processing and, arguably,
+far more besides "for example, analysis of linkage structures such as citations in the academic
+literature and hyperlinks in the Web literature, both useful sources of information that lie outside
+the traditional domain of natural language processing. But, in fact, most text mining efforts
+consciously shun the deeper, cognitive, aspects of classic natural language processing in favor of
+shallower techniques more akin to those used in practical information retrieval.
+The reason is best understood in the context of the historical development of the subject of natural
+language processing. The field "s roots lie in automatic translation projects in the late 1940s and
+early 1950s, whose aficionados assumed that strategies based on word-for-word translation would
+provide decent and useful rough translations that could easily be honed into something more
+accurate using techniques based on elementary syntactic analysis. But the sole outcome of these
+3
+high-profile, heavily-funded projects was the sobering realization that natural language, even at an
+illiterate child "s level, is an astonishingly sophisticated medium that does not succumb to
+simplistic techniques. It depends crucially on what we regard as "common-sense" knowledge,
+which despite "or, more likely, because of "its everyday nature is exceptionally hard to encode
+and utilize in algorithmic form [Lenat, 1995].
+As a result of these embarrassing and much-publicized failures, researchers withdrew into "toy
+worlds" "notably the "blocks world" of geometric objects, shapes, colors, and stacking
+operations "whose semantics are clear and possible to encode explicitly. But it gradually became
+apparent that success in toy worlds, though initially impressive, does not translate into success on
+realistic pieces of text. Toy-world techniques deal well with artificially-constructed sentences of
+what one might call the "Dick and Jane" variety after the well-known series of eponymous
+children "s stories. But they fail dismally when confronted with real text, whether painstakingly
+constructed and edited (like this article) or produced under real-time constraints (like informal
+conversation).
+Meanwhile, researchers in other areas simply had to deal with real text, with all its vagaries,
+idiosyncrasies, and errors. Compression schemes, for example, must work well with all
+documents, whatever their contents, and avoid catastrophic failure even when processing
+outrageously deviant files (such as binary files, or completely random input). Information retrieval
+systems must index documents of all types and allow them to be located effectively whatever their
+subject matter or linguistic correctness. Key-phrase extraction and text summarization algorithms
+have to do a decent job on any text file. Practical, working systems in these areas are topicindependent,
+and most are language-independent. They operate by treating the input as though it
+were data, not language.
+Text mining is an outgrowth of this "real text" mindset. Accepting that it is probably not much,
+what can be done with unrestricted input? Can the ability to process huge amounts of text
+compensate for relatively simple techniques? Natural language processing, dominated in its
+infancy by unrealistic ambitions and swinging in childhood to the other extreme of unrealistically
+artificial worlds and trivial amounts of text, has matured and now embraces both viewpoints:
+relatively shallow processing of unrestricted text and relatively deep processing of domain-specific
+material.
+It is interesting that data mining also evolved out of a history of difficult relations between
+disciplines, in this case machine learning "rooted in experimental computer science, with ad hoc
+evaluation methodologies "and statistics "well-grounded theoretically, but based on a tradition of
+testing explicitly-stated hypotheses rather than seeking new information. Early machine learning
+researchers knew or cared little of statistics; early researchers on structured statistical hypotheses
+remained ignorant of parallel work in machine learning. The result was that similar techniques (for
+example, decision-tree building and nearest-neighbor learners) arose in parallel from the two
+disciplines, and only later did a balanced rapprochement emerge.
+</DOC>
+<DOC><DOCID> 2 </DOCID>
+Vast amounts of new information and data are generated everyday through economic, academic and social activities.
+This sea of data, predicted to increase at a rate of 40% p.a., has significant potential economic and societal
+value. Techniques such as text and data mining and analytics are required to exploit this potential.
+Businesses use such techniques to analyse customer and competitor data to improve competitiveness;
+the pharmaceutical industry mines patents and research articles to improve drug discovery; within academic
+research, mining and analytics of large datasets are delivering efficiencies and new knowledge in areas as diverse
+as biological science, particle physics and media and communications.
+We have explored the costs, benefits, barriers and risks associated with text mining within UKFHE research using
+the approach to welfare economics laid out in the UK Treasury best practice guidelines for evaluation.
+The global research community generates over 1.5 million new scholarly articles per annum.[30] As the recent
+Hargreaves report into 'Digital Opportunity: A Review of Intellectual Property and Growth' [1] highlighted, text
+mining and analytics of this scholarly literature and other digitised text affords a real opportunity to support
+innovation and the development of new knowledge. However, current UK copyright laws are restricting this use of
+text mining. To remedy this, Hargreaves proposes an exception to support text mining and analytics for
+non-commercial research.
+In order to be 'mined', text must be accessed, copied, analysed, annotated and related to existing information and
+understanding. Even if the user has access rights to the material, making annotated copies can be illegal under
+current copyright law without the permission of the copyright holder.
+To date there has been no systematic analysis of the value and benefits of text mining to UK further and higher
+education (UKFHE), nor of the additional value and benefits that might result from the exceptions to copyright
+proposed by Hargreaves. JISC thus commissioned this analysis of 'The Value and Benefits of Text Mining to UK
+Further and Higher Education'.
+We have explored the costs, benefits, barriers and risks associated with text mining within UKFHE research using
+the approach to welfare economics laid out in the UK Treasury best practice guidelines for evaluation [2].
+We gathered our evidence from consultations with key stakeholders and a set of case studies.
+</DOC>
+<DOC><DOCID> 3 </DOCID>
+Untangling Text Data Mining
+Marti A. Hearst
+School of Information Management & Systems
+University of California, Berkeley
+102 South Hall
+Berkeley, CA 94720-4600
+h ttp ://www. sims. berkeley, edu/-hearst
+Abstract
+The possibilities for data mining from large text
+collections are virtually untapped. Text expresses
+a vast, rich range of information, but encodes
+this information in a form that is difficult
+to decipher automatically. Perhaps for this reason,
+there has been little work in text data mining
+to date, and most people who have talked
+about it have either conflated it with information
+access or have not made use of text directly
+to discover heretofore unknown information.
+In this paper I will first define data mining,
+information access, and corpus-based computational
+linguistics, and then discuss the relationship
+of these to text data mining. The intent
+behind these contrasts is to draw attention to
+exciting new kinds of problems for computational
+linguists. I describe examples of what I
+consider to be reM text data mining efforts and
+briefly outline recent ideas about how to pursue
+exploratory data analysis over text.
+1 Introduction
+The nascent field of text data mining (TDM)
+has the peculiar distinction of having a name
+and a fair amount of hype but as yet almost
+no practitioners. I suspect this has happened
+because people assume TDM is a natural extension
+of the slightly less nascent field of data
+mining (DM), also known as knowledge discovery
+in databases (Fayyad and Uthurusamy,
+1999), and information archeology (Brachman
+et al., 1993). Additionally, there are some
+disagreements about what actually constitutes
+data mining. It turns out that "mining" is not a
+very good metaphor for what people in the field
+actually do. Mining implies extracting precious
+nuggets of ore from otherwise worthless rock.
+If data mining really followed this metaphor, it
+would mean that people were discovering new
+factoids within their inventory databases. However,
+in practice this is not really the case.
+Instead, data mining applications tend to be
+(semi)automated discovery of trends and patterns
+across very large datasets, usually for the
+purposes of decision making (Fayyad and Uthurusamy,
+1999; Fayyad, 1997). Part of what I
+wish to argue here is that in the case of text,
+it can be interesting to take the mining-fornuggets
+metaphor seriously.
+</DOC>
+<DOC><DOCID> 4 </DOCID>
+A Predictive Framework for Cyber Security Analytics using Attack Graphs
+Security metrics serve as a powerful tool for organizations to understand the effectiveness of protecting
+computer networks. However majority of these measurement techniques don't adequately help corporations to
+make informed risk management decisions. In this paper we present a stochastic security framework for
+obtaining quantitative measures of security by taking into account the dynamic attributes associated with
+vulnerabilities that can change over time. Our model is novel as existing research in attack graph analysis
+do not consider the temporal aspects associated with the vulnerabilities, such as the availability of exploits
+and patches which can affect the overall network security based on how the vulnerabilities are interconnected
+and leveraged to compromise the system. In order to have a more realistic representation of how the security
+state of the network would vary over time, a nonhomogeneous model is developed which incorporates a time
+dependent covariate, namely the vulnerability age. The daily transition-probability matrices are estimated
+using Frei's Vulnerability Lifecycle model. We also leverage the trusted CVSS metric domain to analyze how
+the total exploitability and impact measures evolve over a time period for a given network.
+</DOC>
