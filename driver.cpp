@@ -7,20 +7,21 @@
 using namespace std;
 
 /**
- * Normalizes the given document contents by lowercasing it and stripping out
+ * Normalizes the document contents by lowercasing it and stripping out
  * non-alphanumeric non-whitespace characters
- * @param  origContents The original contents of the document
- * @return              The new contents of the document
+ * @param  fin A reference to an existing ifstream object
+ * @return The new contents of the document
  */
-string normalizeDocContents(string origContents) {
+string normalizeDocContents(ifstream &fin) {
 
 	stringstream newContents;
-
-	for (int c = 0; c < origContents.length(); c++) {
+	char ch;
+	while (!fin.eof()) {
+		fin.get(ch);
 		// If string is whitespace or alphabnumeric
-		if (isalnum(origContents[c]) || origContents[c] == ' ' || origContents[c] == '\n') {
+		if (isalnum(ch) || ch == ' ' || ch == '\n') {
 			// Convert character to lowercase and add it to new string
-			newContents << (char)tolower(origContents[c]);
+			newContents << (char)tolower(ch);
 		}
 	}
 
@@ -31,9 +32,7 @@ string normalizeDocContents(string origContents) {
 int main() {
 
 	ifstream fin("testdoc.txt");
-	stringstream buffer;
-	buffer << fin.rdbuf();
-	string docContents = normalizeDocContents(buffer.str());
+	string docContents = normalizeDocContents(fin);
 
 	// This will change later
 	PatternMatcher matcher;
