@@ -34,15 +34,32 @@ int main() {
 	ifstream fin("testdoc.txt");
 	string docContents = normalizeDocContents(fin);
 
+	int currentDocId = 0;
+
 	// This will change later
 	PatternMatcher matcher;
-	matcher.addPattern("text mining");
-	matcher.addPattern("information retrieval");
-	matcher.addPattern("text data mining");
+	matcher.addPattern("docid", "docdocid ");
+	matcher.addPattern("term1", "text mining");
+	matcher.addPattern("term2", "information retrieval");
+	matcher.addPattern("term3", "text data mining");
 
 	// Print the contents of testdoc.txt
 	for (int c = 0; c < docContents.length(); c++) {
-		cout << docContents[c];
+		// cout << docContents[c];
+		matcher.readChar(docContents[c]);
+		if (matcher.onFinalState("docid")) {
+			currentDocId += 1;
+			// cout << currentDocId << endl;
+		}
+		if (matcher.onFinalState("term1")) {
+			cout << "\"text mining\" found in document " << currentDocId << endl;
+		}
+		if (matcher.onFinalState("term2")) {
+			cout << "\"information retrieval\" found in document " << currentDocId << endl;
+		}
+		if (matcher.onFinalState("term3")) {
+			cout << "\"information retrieval\" found in document " << currentDocId << endl;
+		}
 	}
 
 	return 0;
