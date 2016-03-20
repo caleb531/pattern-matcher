@@ -44,51 +44,42 @@ int main() {
 	matcher.addPattern("term2", "information retrieval");
 	matcher.addPattern("term3", "text data mining");
 
-	//vectors for each of the terms to track the documents they are found in.
+	// Vectors for each of the terms to track the documents they are found in
 	vector<string> term1Vector;
 	vector<string> term2Vector;
 	vector<string> term3Vector;
-	
-	// Print the contents of testdoc.txt
+
 	for (int c = 0; c < docContents.length(); c++) {
-		// cout << docContents[c];
 		matcher.readChar(docContents[c]);
 		if (matcher.onFinalState("docid")) {
 			currentDocId += 1;
 			term1Vector.resize(currentDocId);
 			term2Vector.resize(currentDocId);
 			term3Vector.resize(currentDocId);
-			//cout << currentDocId << endl;
 		}
 		if (matcher.onFinalState("term1")) {
-			//cout << "\"text mining\" found in document " << currentDocId << endl;
 			term1Vector[currentDocId - 1] = currentDocId + '0';
 		}
 		if (matcher.onFinalState("term2")) {
-			//cout << "\"information retrieval\" found in document " << currentDocId << endl;
 			term2Vector[currentDocId - 1] = currentDocId + '0';
 		}
 		if (matcher.onFinalState("term3")) {
-			//cout << "\"text data mining\" found in document " << currentDocId << endl;
 			term3Vector[currentDocId - 1] = currentDocId + '0';
 		}
 	}
-	
+
 	cout << "\"text mining\" found in document(s): ";
-	for(int i = 0; i < term1Vector.size(); i++)
-	{
+	for (int i = 0; i < term1Vector.size(); i++) {
 		cout << term1Vector[i] + " ";
 	}
 	cout << endl;
 	cout << "\"information retrieval\" found in document(s): ";
-	for(int i = 0; i < term2Vector.size(); i++)
-	{
+	for (int i = 0; i < term2Vector.size(); i++) {
 		cout << term2Vector[i] + " ";
 	}
 	cout << endl;
 	cout << "\"text data mining\" found in document(s): ";
-	for(int i = 0; i < term3Vector.size(); i++)
-	{
+	for (int i = 0; i < term3Vector.size(); i++) {
 		cout << term3Vector[i] + " ";
 	}
 	cout << endl;
