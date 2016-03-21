@@ -2,7 +2,7 @@
 #include "PatternMatcher.h"
 using namespace std;
 
-//Constructor. Sets the number of starting patterns to 0.
+// Constructor; sets the number of starting patterns to 0.
 PatternMatcher::PatternMatcher() {
 	numPatterns = 0;
 }
@@ -10,8 +10,8 @@ PatternMatcher::PatternMatcher() {
 /**
  * addPattern creates a new branch off of the NDFA by adding the patternName
  * and the patternSubstring to the existing patterns array. addPattern
- * takes two arguments. The first is its identification so other functions 
- * can refure to that branch. The second is the string that defines the 
+ * takes two arguments. The first is its identification so other functions
+ * can refer to that branch. The second is the string that defines the
  * diffrent tranistions for each branch.
  */
 int PatternMatcher::addPattern(string patternName, string patternSubstring) {
@@ -24,10 +24,9 @@ int PatternMatcher::addPattern(string patternName, string patternSubstring) {
 /**
  * readChar takes in a single character and compares it to every next state
  * transition in each branch of the NDFA. If the character is the expected
- * transition then the currentState for that part of the NDFA will incress.
- * If it is not the expected transition character the state will reset back
- * to zero.
- * 
+ * transition then the currentState for that part of the NDFA will be
+ * incremented. If it is not the expected transition character the state will
+ * reset back to zero.
  */
 void PatternMatcher::readChar(char inputChar) {
 	for (int p = 0; p < numPatterns; p++) {
@@ -40,8 +39,8 @@ void PatternMatcher::readChar(char inputChar) {
 }
 
 /**
- * onFinalState checks if the state of the branch given with the patternName 
- * argument is in it's final state. If it is, returns true. If it is not 
+ * onFinalState checks if the state of the branch given with the patternName
+ * argument is in its final state. If it is, returns true. If it is not,
  * returns false.
  */
 bool PatternMatcher::onFinalState(string patternName) {
