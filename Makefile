@@ -1,8 +1,8 @@
 #!/usr/bin/make
 
 CC = g++
-SRC = driver.cpp PatternMatcher.cpp
-PROG = pmatcher.out
+SRC = pattern-matcher.cpp
+PROG = pattern-matcher.out
 
 run: build
 	./$(PROG)
