@@ -37,7 +37,6 @@ int main() {
 
 	int currentDocId = 0;
 
-	// This will change later
 	PatternMatcher matcher;
 	matcher.addPattern("docid", "docdocid ");
 	matcher.addPattern("term1", "text mining");
