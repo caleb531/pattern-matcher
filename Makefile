@@ -4,9 +4,6 @@ CC = g++
 SRC = pattern-matcher.cpp
 PROG = pattern-matcher.out
 
-run: build
-	./$(PROG)
-
 build: clean $(PROG)
 
 clean:
